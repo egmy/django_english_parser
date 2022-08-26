@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AutoComplete</title>
+	<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">
+	</script>
+	
+	<script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">
+	</script>
+
+
+	
+	<link href=
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+		rel="stylesheet" type="text/css" />
+
+        
+</head>
+<body>
+	<h1>Welcome to GFG</h1>
+    <form >
+	<input type="text" id="tags">
+
+    </form>
+    <p>Programming Languages: <span></span></p>
+    <textarea id="message" rows="5" cols="30"></textarea>
+
+    
+    
+    
+	<script>
+$( function() {
+    var availableTags = [
+        {% for language in languages %}
+            "{{language.name}}",
+        {% endfor %}
+    ];
+
+    
+    $( "#tags" ).autocomplete({
+      source: availableTags,
+      select: function( event, ui ) {
+          val=ui.item.value
+          $("#message").append(val+"\n");
+
+         
+      } 
+
+    });
+  });
+
+
+ 
+</script>
+</body>
+</html>

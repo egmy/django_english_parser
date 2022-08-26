@@ -1,0 +1,227 @@
+{% extends 'englishgrammar/base.html' %} 
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+
+
+
+  #firstp{
+  position: fixed;
+
+right: 0;
+
+top: 0;
+  
+width: 260px;
+  }
+  .center {
+
+    text-align: center;  
+    color: #277582;  
+    padding: 20px;  
+} 
+
+
+
+#myChart,
+#myChart1 {
+    width: 320px;
+    height: 350px;
+}
+
+
+
+
+
+  
+</style>
+
+<script>$(document).ready(function(){
+    $('[data-toggle="offcanvas"]').click(function(){
+        $("#navigation").toggleClass("hidden-xs");
+    });
+ });
+ </script>
+
+<h2>Hi {{fname}}.</h2>
+<div class="center">
+<label id="welcome"> <b>Welcome to the Dashboard Page</b></label>
+<p id=firstp><a href="{% url 'signout' %}">Log Out</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+<h1 class="text-center">English Grammar Parser</h1>
+
+
+
+
+    <!-- Modal -->
+    
+
+                               
+                                    
+
+ 
+
+
+
+
+
+<div class="container">
+
+
+
+		<div class="row mt-5">
+			<div class="col-md-4 mt-2">
+
+                <form action="/home" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <label>Input File</label>
+                    <input type="file" class="form-control" name="myfile"></input>               
+                    <button type="submit" name="submit_file" class="btn btn-dark">Submit File</button><br>
+
+                    <label>Input sentence</label>
+                    <input type="text" name="sentence_form" ></input>                
+                <button type="submit" name="submit_sentence" class="btn btn-dark">Submit Sentence</button>
+            
+           </form>
+		
+
+			</div>
+
+		<h3 class="text-center">{{sentence}}</h3>
+
+        <div class="chartbox">
+            <canvas id="myChart" style="width: 50vh" width="400" height="50vh"></canvas>
+        </div>  
+
+        <div class="chartbox">
+            <canvas id="myChart1" width="400" height="250"></canvas>
+        </div> 
+ 
+
+
+
+		<div class="col-md-5 col-sm-5 col-xs-12 gutter">
+            
+                <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Sentences", "Verb Phrases", "Noun Phrases", "Prepositional Phrases"],
+                        datasets: [{
+                            label: ' Number of Words',
+                            data: [ {{product.sentence}},{{product.verbphase}},{{product.nounphase}},{{product.prepphase}}  ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 206, 86, 0.8)',
+                                'rgba(75, 192, 192, 0.8)',
+                                'rgba(153, 102, 255, 0.8)',
+                                'rgba(255, 159, 64, 0.8)',
+                                'rgba(240, 120, 50, 0.8)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(240, 120, 50, 1)',
+
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            
+                        }
+                    }
+                });
+
+                var ctx1 = document.getElementById('myChart1').getContext('2d');
+                var myChart1 = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Noun","Verb", "Article", "Adjective", "Adverb", "Pronouns", "Preposition", "Interjection"],
+                        datasets: [{
+                            label: ' Number of Words',
+                            data: [ {{product.noun}} ,{{product.verb}},{{product.article}}, {{product.adjective}}, {{product.adverb}}, {{product.pronoun}}, {{product.preposition}}, {{product.interjection}}  ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 206, 86, 0.8)',
+                                'rgba(75, 192, 192, 0.8)',
+                                'rgba(153, 102, 255, 0.8)',
+                                'rgba(255, 159, 64, 0.8)',
+                                'rgba(240, 120, 50, 0.8)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(240, 120, 50, 1)',
+
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+                myChart.render()
+                myChart1.render()
+                </script>
+        </div>
+    </div>
+</div>
+
+
+
+	
+	
+
+
+
+
+
+
+{% else %}
+
+  <p>You are not logged in</p>
+  <a href="{% url 'signin' %}">Log In</a>
+  <br>
+  <a href="{% url 'signup' %}">Sign Up</a>
+
+
+{% endif %}
+{% endblock %}
